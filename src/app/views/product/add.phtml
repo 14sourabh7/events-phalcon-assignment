@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Products</title>
+</head>
+
+<body>
+    <h2>Add Product</h2>
+
+    <?php echo $this->tag->form(""); ?>
+
+    <p>
+        <label for="name">Name</label>
+        <?php echo $this->tag->textField("name"); ?>
+    </p>
+
+    <p>
+        <label for="email">Description</label>
+        <?php echo $this->tag->textArea("description"); ?>
+    </p>
+    <p>
+        <label for="tags">Tags</label>
+        <?php echo $this->tag->textField("tags"); ?>
+    </p>
+    <p>
+        <label for="price">Price</label>
+        <?php echo $this->tag->textField("price"); ?>
+    </p>
+    <p>
+        <label for="stock">Stock</label>
+        <?php echo $this->tag->textField("stock"); ?>
+    </p>
+
+    <p>
+        <?php echo $this->tag->submitButton(["Add", "class" => "btn btn-primary"]);
+        echo $errorMessage;
+        ?>
+    </p>
+
+    </form>
+</body>
+
+</html>

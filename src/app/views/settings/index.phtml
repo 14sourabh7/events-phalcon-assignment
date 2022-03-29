@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Products</title>
+</head>
+
+<body>
+    <?php
+    echo $this->tag->linkTo(["/product", "Product", 'class' => 'btn btn-primary']);
+    echo $this->tag->linkTo(["/order", "Orders", 'class' => 'btn btn-danger']);
+
+    ?>
+    <h2>Settings</h2>
+
+
+
+    <?php echo $this->tag->form(""); ?>
+    <p>
+        <label for="title"> Title optimization :
+            <select name="title">
+                <option value="<?php echo $title ?>" name='tags'><?php echo $title ?> Tags</option>
+                <option value="with" name='tags'>With Tags</option>
+                <option value="without" name='tags'>Without Tags</option>
+            </select>
+        </label>
+    </p>
+    <p>
+        <label for="price"> Default Price:
+            <?php
+            echo $this->tag->textField(['price', 'value' => $price]);
+            ?>
+        </label>
+    </p>
+    <p>
+        <label for="stock"> Default Stock:
+            <?php
+            echo $this->tag->textField(['stock', 'value' => $stock]);
+            ?>
+        </label>
+    </p>
+    <p>
+        <label for="zip"> Default Zipcode:
+            <?php
+            echo $this->tag->textField(['zip', 'value' => $zip]);
+            ?>
+        </label>
+    </p>
+    <p>
+        <?php echo $this->tag->submitButton(["update", "class" => "btn btn-primary"]);
+        echo $errorMessage;
+        ?>
+    </p>
+
+    </form>
+</body>
+
+</html>
