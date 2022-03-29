@@ -12,6 +12,7 @@
     use Phalcon\Logger\Adapter\Stream;
 
 
+
     define('BASE_PATH', dirname(__DIR__));
     define('APP_PATH', BASE_PATH . '/app');
 
@@ -68,7 +69,7 @@
         'db',
         function () {
             $eventsManager = new Manager();
-            $adapter = new Stream('../app/logs/db.log');
+            $adapter = new Stream('../app/logs/main.log');
             $logger  = new Logger(
                 'messages',
                 [

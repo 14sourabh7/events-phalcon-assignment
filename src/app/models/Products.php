@@ -1,8 +1,6 @@
 <?php
 
 use Phalcon\Mvc\Model;
-use Phalcon\Events\Event;
-use Phalcon\Events\Manager as EventsManager;
 
 class Products extends Model
 {

@@ -1,5 +1,5 @@
 <?php
-
+// helper class for logger
 namespace App\Components;
 
 use Phalcon\Logger;

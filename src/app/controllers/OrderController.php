@@ -9,6 +9,7 @@ class OrderController extends Controller
     {
         $this->view->orders = Orders::find();
     }
+
     public function addorderAction()
     {
         $this->view->products = Products::find();
@@ -16,12 +17,15 @@ class OrderController extends Controller
         $escaper = new \App\Components\MyEscaper();
         $checkPost = $this->request->isPost();
         $this->view->errorMessage = "";
+
         if ($checkPost) {
 
             $inputs = $this->request->getPost();
 
             if ($inputs['name'] && $inputs['address'] && $inputs['quantity'] && $inputs['product']) {
+
                 if (is_numeric($inputs['quantity'])) {
+
                     if ($inputs['zip']) {
                         if (is_numeric($inputs['zip'])) {
                             $zip = $escaper->sanitize($inputs['zip']);

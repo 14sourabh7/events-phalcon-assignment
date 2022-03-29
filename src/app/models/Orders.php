@@ -1,10 +1,6 @@
 <?php
 
 use Phalcon\Mvc\Model;
-use Phalcon\Events\Event;
-use Phalcon\Events\Manager as EventsManager;
-use Phalcon\Logger;
-use Phalcon\Logger\Adapter\Stream;
 
 class Orders extends Model
 {

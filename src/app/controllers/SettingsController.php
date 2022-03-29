@@ -9,16 +9,22 @@ class SettingsController extends Controller
     {
         $escaper = new \App\Components\MyEscaper();
         $setting = Settings::findFirst('admin_id=1');
+
+        //variables to populate setting form
         $this->view->price = $setting->price;
         $this->view->stock = $setting->stock;
         $this->view->zip = $setting->zipcode;
         $this->view->title = $setting->title;
         $this->view->errorMessage = "";
+
+        //checking post
         $check = $this->request->isPost();
         if ($check) {
             $inputs = $this->request->getPost();
 
             if ($inputs['title'] && $inputs['price'] && $inputs['stock'] && $inputs['zip']) {
+
+                //validating numeric input
                 if (is_numeric($inputs['price']) && is_numeric($inputs['stock']) && is_numeric($inputs['zip'])) {
                     $settingArr = [
                         'title' => $escaper->sanitize($inputs['title']),
@@ -33,7 +39,9 @@ class SettingsController extends Controller
                             'title', 'price', 'stock', 'zipcode'
                         ]
                     );
+
                     $success = $setting->update();
+
                     if ($success) {
                         $this->response->redirect('/');
                     }

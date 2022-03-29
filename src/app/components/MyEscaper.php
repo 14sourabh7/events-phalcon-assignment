@@ -1,5 +1,5 @@
 <?php
-
+// helper class for escaper
 namespace App\Components;
 
 use Phalcon\Escaper;

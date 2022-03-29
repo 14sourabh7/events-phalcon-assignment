@@ -2,7 +2,6 @@
 
 use Phalcon\Mvc\Controller;
 
-
 class ProductController extends Controller
 {
     public function indexAction()
@@ -10,13 +9,19 @@ class ProductController extends Controller
 
         $this->view->products = Products::find();
     }
+
+
     public function addAction()
     {
         $escaper = new \App\Components\MyEscaper();
+
         $checkPost = $this->request->isPost();
         $this->view->errorMessage = "";
+
         if ($checkPost) {
+
             $inputs = $this->request->getPost();
+
             if ($inputs['name'] && $inputs['description'] && $inputs['tags']) {
 
                 if ($inputs['price'] || $inputs['stock']) {
@@ -24,7 +29,9 @@ class ProductController extends Controller
                     $checkS = 1;
                     $price = 0;
                     $stock = 0;
+
                     if ($inputs['price']) {
+
                         if (is_numeric($inputs['price'])) {
                             $checkP = 1;
                             $price = $escaper->sanitize($inputs['price']);
@@ -33,6 +40,7 @@ class ProductController extends Controller
                             $this->view->errorMessage = '*price and stock must be numeric';
                         }
                     }
+
                     if ($inputs['stock']) {
 
                         if (is_numeric($inputs['stock'])) {
@@ -61,6 +69,7 @@ class ProductController extends Controller
                             ]
                         );
                         $success = $product->save();
+
                         if ($success) {
                             $setting = Settings::findFirst('admin_id=1');
                             $event = new \App\Components\MyEvents();
@@ -78,12 +87,14 @@ class ProductController extends Controller
                     ];
 
                     $product = new Products();
+
                     $product->assign(
                         $productArr,
                         [
                             'name', 'description', 'tags', 'price', 'stock'
                         ]
                     );
+
                     $success = $product->save();
                     if ($success) {
                         $setting = Settings::findFirst('admin_id=1');
