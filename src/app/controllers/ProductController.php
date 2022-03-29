@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function addAction()
     {
         $escaper = new \App\Components\MyEscaper();
-
+        $handler = $this->eventHandler->productSave();
         $checkPost = $this->request->isPost();
         $this->view->errorMessage = "";
 
@@ -71,7 +71,7 @@ class ProductController extends Controller
                         $success = $product->save();
 
                         if ($success) {
-                            $this->eventHandler->productSave()->fire('product:afterSave', $this, ['product' => $product, 'setting' => $setting]);
+                            $handler->fire('product:afterSave', $this, ['product' => $product, 'setting' => $setting]);
                             $this->response->redirect('/product');
                         }
                     }
@@ -95,7 +95,7 @@ class ProductController extends Controller
 
                     $success = $product->save();
                     if ($success) {
-                        $this->eventHandler->productSave($product, $setting)->fire('product:afterSave', $this);
+                        $handler->fire('product:afterSave', $this);
                         $this->response->redirect('/product');
                     }
                 }

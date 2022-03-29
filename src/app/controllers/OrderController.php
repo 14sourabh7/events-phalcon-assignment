@@ -13,7 +13,8 @@ class OrderController extends Controller
     public function addorderAction()
     {
         $this->view->products = Products::find();
-
+        $handler =
+            $this->eventHandler->orderSave();
         $escaper = new \App\Components\MyEscaper();
         $checkPost = $this->request->isPost();
         $this->view->errorMessage = "";
@@ -69,7 +70,7 @@ class OrderController extends Controller
                         );
                         $success = $order->save();
                         if ($success) {
-                            $this->eventHandler->orderSave()->fire('order:afterSave', $this);
+                            $handler->fire('order:afterSave', $this);
                             $this->response->redirect('/order');
                         }
                     }
