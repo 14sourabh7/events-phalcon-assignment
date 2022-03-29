@@ -27,7 +27,8 @@
     );
     $loader->registerNamespaces(
         [
-            'App\Components' => APP_PATH . '/components/'
+            'App\Components' => APP_PATH . '/components/',
+            'App\Handler' => APP_PATH . '/handler/'
         ]
     );
 
@@ -55,6 +56,13 @@
         }
     );
 
+    $container->set(
+        'eventHandler',
+        function () {
+            $event = new \App\Handler\EventHandler();
+            return $event;
+        }
+    );
 
     $container->set(
         'response',
@@ -64,50 +72,63 @@
         }
     );
 
-
     $container->set(
         'db',
         function () {
-            $eventsManager = new Manager();
-            $adapter = new Stream('../app/logs/main.log');
-            $logger  = new Logger(
-                'messages',
+            global $config;
+            return new Mysql(
                 [
-                    'main' => $adapter,
-                ]
-            );
-
-            $eventsManager->attach(
-                'db:beforeQuery',
-                function ($event, $connection) use ($logger) {
-                    $logger->info(
-                        $connection->getSQLStatement()
-                    );
-                }
-            );
-            $eventsManager->attach(
-                'db:afterQuery',
-                function ($event, $connection) use ($logger) {
-                    $logger->info(
-                        $connection->getSQLStatement()
-                    );
-                }
-            );
-
-            $connection = new Mysql(
-                [
-                    'host'     => 'mysql-server',
+                    'host'  => 'mysql-server',
                     'username' => 'root',
                     'password' => 'secret',
                     'dbname'   => 'store',
                 ]
-
             );
-
-            $connection->setEventsManager($eventsManager);
-            return $connection;
         }
     );
+    // $container->set(
+    //     'db',
+    //     function () {
+    //         $eventsManager = new Manager();
+    //         $adapter = new Stream('../app/logs/main.log');
+    //         $logger  = new Logger(
+    //             'messages',
+    //             [
+    //                 'main' => $adapter,
+    //             ]
+    //         );
+
+    //         $eventsManager->attach(
+    //             'db:beforeQuery',
+    //             function ($event, $connection) use ($logger) {
+    //                 $logger->info(
+    //                     $connection->getSQLStatement()
+    //                 );
+    //             }
+    //         );
+    //         $eventsManager->attach(
+    //             'db:afterQuery',
+    //             function ($event, $connection) use ($logger) {
+    //                 $logger->info(
+    //                     $connection->getSQLStatement()
+    //                 );
+    //             }
+    //         );
+
+    //         $connection = new Mysql(
+    //             [
+    //                 'host'     => 'mysql-server',
+    //                 'username' => 'root',
+    //                 'password' => 'secret',
+    //                 'dbname'   => 'store',
+    //             ]
+
+    //         );
+
+    //         $connection->setEventsManager($eventsManager);
+    //         return $connection;
+    //     }
+    // );
 
 
 

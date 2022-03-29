@@ -69,9 +69,7 @@ class OrderController extends Controller
                         );
                         $success = $order->save();
                         if ($success) {
-                            $setting = Settings::findFirst('admin_id=1');
-                            $event = new \App\Components\MyEvents();
-                            $event->orderSave($order, $setting)->fire('order:afterSave', $this);
+                            $this->eventHandler->orderSave()->fire('order:afterSave', $this);
                             $this->response->redirect('/order');
                         }
                     }

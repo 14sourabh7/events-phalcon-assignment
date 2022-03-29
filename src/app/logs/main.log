@@ -1,22 +1,7 @@
-[2022-03-29T08:29:06+00:00][info] updated
-[2022-03-29T08:34:33+00:00][info] order updated
-[2022-03-29T08:38:11+00:00][info] product updated
-[2022-03-29T08:38:20+00:00][info] product updated
-[2022-03-29T09:24:21+00:00][info] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'products' AND `TABLE_SCHEMA` = DATABASE()
-[2022-03-29T09:24:21+00:00][info] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'products' AND `TABLE_SCHEMA` = DATABASE()
-[2022-03-29T09:24:21+00:00][info] DESCRIBE `products`
-[2022-03-29T09:24:21+00:00][info] DESCRIBE `products`
-[2022-03-29T09:24:21+00:00][info] SELECT `products`.`product_id`, `products`.`name`, `products`.`description`, `products`.`tags`, `products`.`price`, `products`.`stock` FROM `products`
-[2022-03-29T09:24:21+00:00][info] SELECT `products`.`product_id`, `products`.`name`, `products`.`description`, `products`.`tags`, `products`.`price`, `products`.`stock` FROM `products`
-[2022-03-29T09:24:46+00:00][info] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'settings' AND `TABLE_SCHEMA` = DATABASE()
-[2022-03-29T09:24:46+00:00][info] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'settings' AND `TABLE_SCHEMA` = DATABASE()
-[2022-03-29T09:24:46+00:00][info] DESCRIBE `settings`
-[2022-03-29T09:24:46+00:00][info] DESCRIBE `settings`
-[2022-03-29T09:24:46+00:00][info] SELECT `settings`.`admin_id`, `settings`.`title`, `settings`.`price`, `settings`.`stock`, `settings`.`zipcode` FROM `settings` WHERE `settings`.`admin_id` = 1 LIMIT :APL0
-[2022-03-29T09:24:46+00:00][info] SELECT `settings`.`admin_id`, `settings`.`title`, `settings`.`price`, `settings`.`stock`, `settings`.`zipcode` FROM `settings` WHERE `settings`.`admin_id` = 1 LIMIT :APL0
-[2022-03-29T09:26:34+00:00][info] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'settings' AND `TABLE_SCHEMA` = DATABASE()
-[2022-03-29T09:26:34+00:00][info] SELECT IF(COUNT(*) > 0, 1, 0) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_NAME` = 'settings' AND `TABLE_SCHEMA` = DATABASE()
-[2022-03-29T09:26:34+00:00][info] DESCRIBE `settings`
-[2022-03-29T09:26:34+00:00][info] DESCRIBE `settings`
-[2022-03-29T09:26:34+00:00][info] SELECT `settings`.`admin_id`, `settings`.`title`, `settings`.`price`, `settings`.`stock`, `settings`.`zipcode` FROM `settings` WHERE `settings`.`admin_id` = 1 LIMIT :APL0
-[2022-03-29T09:26:34+00:00][info] SELECT `settings`.`admin_id`, `settings`.`title`, `settings`.`price`, `settings`.`stock`, `settings`.`zipcode` FROM `settings` WHERE `settings`.`admin_id` = 1 LIMIT :APL0
+[2022-03-29T11:22:47+00:00][info] product updated
+[2022-03-29T11:25:03+00:00][info] product updated
+[2022-03-29T11:38:31+00:00][info] product updated
+[2022-03-29T12:29:37+00:00][info] product updated
+[2022-03-29T13:00:08+00:00][info] product updated
+[2022-03-29T13:01:38+00:00][info] order updated
+[2022-03-29T13:05:48+00:00][info] order updated

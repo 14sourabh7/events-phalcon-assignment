@@ -71,9 +71,7 @@ class ProductController extends Controller
                         $success = $product->save();
 
                         if ($success) {
-                            $setting = Settings::findFirst('admin_id=1');
-                            $event = new \App\Components\MyEvents();
-                            $event->productSave($product, $setting)->fire('product:afterSave', $this);
+                            $this->eventHandler->productSave()->fire('product:afterSave', $this, ['product' => $product, 'setting' => $setting]);
                             $this->response->redirect('/product');
                         }
                     }
@@ -97,9 +95,7 @@ class ProductController extends Controller
 
                     $success = $product->save();
                     if ($success) {
-                        $setting = Settings::findFirst('admin_id=1');
-                        $event = new \App\Components\MyEvents();
-                        $event->productSave($product, $setting)->fire('product:afterSave', $this);
+                        $this->eventHandler->productSave($product, $setting)->fire('product:afterSave', $this);
                         $this->response->redirect('/product');
                     }
                 }
