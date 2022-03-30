@@ -13,7 +13,7 @@ class OrderController extends Controller
         $this->view->orders = $order->getOrders();
     }
 
-    public function addorderAction()
+    public function addAction()
     {
         $eventManager = $this->di->get('EventsManager');
         // $eventManager->fire('application:beforeHandleRequest', $this);

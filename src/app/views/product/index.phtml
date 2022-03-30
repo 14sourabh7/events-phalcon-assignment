@@ -10,9 +10,9 @@
 
 <body>
     <?php
-    echo $this->tag->linkTo(["/product/add", "Add Product", 'class' => 'btn btn-primary']);
-    echo $this->tag->linkTo(["/order", "Orders", 'class' => 'btn btn-danger']);
-    echo $this->tag->linkTo(["/settings", "Settings", 'class' => 'btn btn-secondary']);
+    echo $this->tag->linkTo(["/product/add?role=" . $_GET['role'], "Add Product", 'class' => 'btn btn-primary']);
+    echo $this->tag->linkTo(["/order?role=" . $_GET['role'], "Orders", 'class' => 'btn btn-danger']);
+    echo $this->tag->linkTo(["/settings?role=" . $_GET['role'], "Settings", 'class' => 'btn btn-secondary']);
     ?>
     <?php
     if ($products)

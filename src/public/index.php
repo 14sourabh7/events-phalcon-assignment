@@ -54,8 +54,10 @@
     );
 
     $eventsManager = new Manager();
+    $application->setEventsManager($eventsManager);
     $container->set('EventsManager', $eventsManager);
     $eventsManager->attach('order', new \App\Handler\EventHandler());
+    $eventsManager->attach('application:beforeHandleRequest', new \App\Handler\EventHandler());
 
     $container->set(
         'response',

@@ -7,27 +7,145 @@ use Phalcon\Acl\Component;
 
 class AccessController extends Controller
 {
-    public function buildAclAction()
+    public function indexAction()
     {
-        $aclFile = APP_PATH . '/security/acl.cache';
-        $acl = new Memory();
-        if (true !== is_file($aclFile)) {
-            $acl->addRole('admin');
-            $acl->addRole('manager');
-            $acl->addRole('guest');
+    }
+    public function buildaclAction()
+    {
+        $permissions = new Permissions();
+        $permission = $permissions->getPermissions();
+        $roles = new Roles();
+        $role = $roles->getRoles();
+        $controllers = new Controllers();
+        $controller = $controllers->getControllers();
+        $this->view->permissions = $permission;
+        $this->view->roles = $role;
+        $this->view->controllers = $controller;
 
-            $acl->addComponent('settings', ['index']);
-            $acl->addComponent('product', ['index', 'add']);
-            $acl->addComponent('order', ['index', 'addorder']);
+        $check = $this->request->getPost();
+        if ($check) {
+            $dbrole = $this->request->getPost()['roles'];
+            $dbcontroller = $this->request->getPost()['controller'];
+            $dbaction = $this->request->getPost()['action'];
+            $permissionCheck = Permissions::find("role = '$dbrole' AND action= '$dbaction' AND controller='$dbcontroller'");
+            // print_r($permissionCheck);
+            // die;
+            if (count($permissionCheck) < 1) {
+                $permissions->role = $dbrole;
+                $permissions->controller = $dbcontroller;
+                $permissions->action = $dbaction;
+                $result = $permissions->save();
+                if ($result) {
+                    $aclFile = APP_PATH . '/security/acl.cache';
+                    $acl = new Memory();
 
-            $acl->allow('admin', '*', '*');
-            $acl->allow('manager', 'product', '*');
-            $acl->allow('manager', 'order', '*');
-            $acl->allow('guest', 'product', 'index');
+                    foreach ($role as $r) {
+                        $acl->addRole($r->role);
+                    }
+                    foreach ($controller as $c) {
+                        $acl->addComponent($c->controller, ['index', 'add', 'update', 'delete']);
+                    }
+                    $permission = $permissions->getPermissions();
+                    foreach ($permission as $p) {
+                        $acl->allow($p->role, $p->controller, $p->action);
+                    }
+                    file_put_contents($aclFile, serialize($acl));
+                    $this->response->redirect('/access/buildacl?role=admin');
+                }
+            }
+        }
+    }
 
+    public function addroleAction()
+    {
+        $escaper = new \App\Components\MyEscaper();
+        $roles = new Roles();
+        $this->view->roles = $roles->getRoles();
+        $dbroles = $roles->getRoles();
+        $check = $this->request->isPost();
+        $checkRole = 0;
+        $this->view->errorMsg = "";
+        if ($check) {
+            $inpRole = $escaper->sanitize($this->request->getPost('roles'));
+            foreach ($dbroles as $r) {
+                if ($inpRole == $r->role) {
+                    $checkRole = 1;
+                    break;
+                }
+            }
+            if (!$checkRole) {
+                $roles->role = $inpRole;
+                $result = $roles->save();
+                if ($result) {
+                    $this->response->redirect('/access/addrole?role=admin');
+                }
+            } else {
+                $this->view->errorMsg = '*already exists';
+            }
+        }
+    }
+    public function delAction()
+    {
+        $permissions = Permissions::find("id = '" . $_GET["id"] . "' ");
+        $result = $permissions->delete();
+        if ($result) {
+            $role = Roles::find();
+            $controller = Controllers::find();
+            $permission = Permissions::find();
+            $aclFile = APP_PATH . '/security/acl.cache';
+            $acl = new Memory();
+
+            foreach ($role as $r) {
+                $acl->addRole($r->role);
+            }
+            foreach ($controller as $c) {
+                $acl->addComponent($c->controller, ['index', 'add', 'update', 'delete']);
+            }
+
+            foreach ($permission as $p) {
+                $acl->allow($p->role, $p->controller, $p->action);
+            }
             file_put_contents($aclFile, serialize($acl));
-        } else {
-            $acl = unserialize(file_get_contents($aclFile));;
+        }
+        $this->response->redirect('/access/buildacl?role=admin');
+    }
+
+
+
+    public function addcontrollerAction()
+    {
+
+        $Controller = new Controllers();
+        $this->view->controllers = $Controller->getControllers();
+        $dbcontroller = $Controller->getControllers();
+
+        $checkController = 0;
+
+        $this->view->errorMsg = "";
+
+        $mydir = '../app/controllers';
+        $mycontrollers = scandir($mydir);
+
+        foreach ($mycontrollers as $controller) {
+            $checkController = 0;
+            if (strpos($controller, '.php') !== false) {
+                $controller = explode("Controller.php", $controller);
+                $controller = strtolower($controller[0]);
+                foreach ($dbcontroller as $r) {
+                    if ($r->controller == $controller) {
+                        $checkController = 1;
+                    }
+                }
+                if (!$checkController) {
+                    $Controller->controller = $controller;
+                    $result = $Controller->save();
+                    if ($result) {
+                        $this->response->redirect('/access/addcontroller?role=admin');
+                    }
+                }
+            } else {
+                continue;
+            }
         }
     }
 }

@@ -76,15 +76,12 @@ class EventHandler
             $acl = unserialize(file_get_contents($aclFile));
 
             $role = $application->request->get('role');
-            $url = $application->request->get('_url');
-            $params = explode("/", $url);
-            if (!$params[2]) {
-                array_splice($params, 2, 1, 'index');
-            }
-            $controller = $params[1];
-            $method = $params[2];
+            $controller
+                = $application->router->getControllerName();
+            $action
+                = $application->router->getActionName();
 
-            if (!$role || true !== $acl->isAllowed($role, $controller, $method)) {
+            if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
                 die('You are not authorised');
             }
         } else {

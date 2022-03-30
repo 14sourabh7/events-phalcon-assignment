@@ -46,7 +46,7 @@ class SettingsController extends Controller
                     $success = $setting->update();
 
                     if ($success) {
-                        $this->response->redirect('/');
+                        $this->response->redirect('/product?role=' . $_GET['role']);
                     }
                 } else {
                     $this->view->errorMessage = '*price, stock and zip must be numeric';
