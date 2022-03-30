@@ -10,4 +10,9 @@ class Products extends Model
     public $tags;
     public $price;
     public $stock;
+
+    public function getProducts()
+    {
+        return Products::find();
+    }
 }

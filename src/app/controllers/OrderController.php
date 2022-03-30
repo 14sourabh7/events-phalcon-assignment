@@ -7,14 +7,13 @@ class OrderController extends Controller
 {
     public function indexAction()
     {
-        $this->view->orders = Orders::find();
+        $order = new Orders();
+        $this->view->orders = $order->getOrders();
     }
 
     public function addorderAction()
     {
         $this->view->products = Products::find();
-        $handler =
-            $this->eventHandler->orderSave();
         $escaper = new \App\Components\MyEscaper();
         $checkPost = $this->request->isPost();
         $this->view->errorMessage = "";
@@ -70,7 +69,8 @@ class OrderController extends Controller
                         );
                         $success = $order->save();
                         if ($success) {
-                            $handler->fire('order:afterSave', $this);
+                            $eventManager = $this->di->get('EventsManager');
+                            $eventManager->fire('order:orderSave', $this);
                             $this->response->redirect('/order');
                         }
                     }

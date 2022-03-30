@@ -2,8 +2,6 @@
 // event handle class
 namespace App\Handler;
 
-use Phalcon\Events\Event;
-use Phalcon\Events\Manager as EventsManager;
 use Products;
 use Orders;
 use Settings;
@@ -21,38 +19,26 @@ class EventHandler
      */
     public function productSave()
     {
+        $logger = new \App\Components\MyLogger();
 
-        // $this->setting = $setting;
+        $setting = Settings::findFirst('admin_id=1');
+        $product = Products::findFirst(['order' => 'product_id DESC']);
 
-        $eventsManager = new EventsManager();
+        if ($product->stock == 0) {
+            $product->stock = $setting->stock;
+        }
 
-        $eventsManager->attach('product:afterSave', function () {
+        if ($product->price == 0) {
+            $product->price = $setting->price;
+        }
 
-            $logger = new \App\Components\MyLogger();
+        if ($setting->title == 'with') {
+            $name = $product->name . " " . $product->tags;
+            $product->name = $name;
+        }
 
-            $setting = Settings::findFirst('admin_id=1');
-            $product = Products::findFirst(['order' => 'product_id DESC']);
-
-            if ($product->price == 0 || $product->stock == 0) {
-
-                if ($product->stock == 0) {
-                    $product->stock = $setting->stock;
-                }
-
-                if ($product->price == 0) {
-                    $product->price = $setting->price;
-                }
-
-                if ($setting->title == 'with') {
-                    $name = $product->name . " " . $product->tags;
-                    $product->name = $name;
-                }
-
-                $product->update();
-                $logger->log("product updated");
-            }
-        });
-        return $eventsManager;
+        $product->update();
+        $logger->log("product updated");
     }
 
     /**
@@ -66,23 +52,15 @@ class EventHandler
      */
     public function orderSave()
     {
-        $eventsManager = new EventsManager();
+        $logger = new \App\Components\MyLogger();
+        $setting = Settings::findFirst('admin_id=1');
+        $order = Orders::findFirst(['order' => 'order_id DESC']);
 
-        $eventsManager->attach(
-            'order:afterSave',
-            function () {
-                $logger = new \App\Components\MyLogger();
-                $setting = Settings::findFirst('admin_id=1');
-                $order = Orders::findFirst(['order' => 'order_id DESC']);
+        if ($order->zip == 0) {
+            $order->zip = $setting->zipcode;
+        }
 
-                if ($order->zip == 0) {
-                    $order->zip = $setting->zipcode;
-                }
-
-                $order->update();
-                $logger->log("order updated");
-            }
-        );
-        return $eventsManager;
+        $order->update();
+        $logger->log("order updated");
     }
 }

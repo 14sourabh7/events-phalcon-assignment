@@ -10,4 +10,9 @@ class Orders extends Model
     public $zip;
     public $product;
     public $quantity;
+
+    public function getOrders()
+    {
+        return Orders::find();
+    }
 }

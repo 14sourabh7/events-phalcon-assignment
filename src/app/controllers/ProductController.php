@@ -6,15 +6,14 @@ class ProductController extends Controller
 {
     public function indexAction()
     {
-
-        $this->view->products = Products::find();
+        $product = new Products();
+        $this->view->products = $product->getProducts();;
     }
 
 
     public function addAction()
     {
         $escaper = new \App\Components\MyEscaper();
-        $handler = $this->eventHandler->productSave();
         $checkPost = $this->request->isPost();
         $this->view->errorMessage = "";
 
@@ -71,7 +70,8 @@ class ProductController extends Controller
                         $success = $product->save();
 
                         if ($success) {
-                            $handler->fire('product:afterSave', $this, ['product' => $product, 'setting' => $setting]);
+                            $eventManager = $this->di->get('EventsManager');
+                            $eventManager->fire('order:productSave', $this);
                             $this->response->redirect('/product');
                         }
                     }
@@ -95,7 +95,8 @@ class ProductController extends Controller
 
                     $success = $product->save();
                     if ($success) {
-                        $handler->fire('product:afterSave', $this);
+                        $eventManager = $this->di->get('EventsManager');
+                        $eventManager->fire('order:productSave', $this);
                         $this->response->redirect('/product');
                     }
                 }

@@ -8,7 +8,8 @@ class SettingsController extends Controller
     public function indexAction()
     {
         $escaper = new \App\Components\MyEscaper();
-        $setting = Settings::findFirst('admin_id=1');
+        $settings = new Settings();
+        $setting = $settings->getSettings();
 
         //variables to populate setting form
         $this->view->price = $setting->price;

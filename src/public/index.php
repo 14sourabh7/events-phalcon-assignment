@@ -8,9 +8,6 @@
     use Phalcon\Http\Response;
     use Phalcon\Db\Adapter\Pdo\Mysql;
     use Phalcon\Events\Manager;
-    use Phalcon\Logger;
-    use Phalcon\Logger\Adapter\Stream;
-
 
 
     define('BASE_PATH', dirname(__DIR__));
@@ -56,13 +53,9 @@
         }
     );
 
-    $container->set(
-        'eventHandler',
-        function () {
-            $event = new \App\Handler\EventHandler();
-            return $event;
-        }
-    );
+    $eventsManager = new Manager();
+    $container->set('EventsManager', $eventsManager);
+    $eventsManager->attach('order', new \App\Handler\EventHandler());
 
     $container->set(
         'response',
@@ -86,51 +79,6 @@
             );
         }
     );
-    // $container->set(
-    //     'db',
-    //     function () {
-    //         $eventsManager = new Manager();
-    //         $adapter = new Stream('../app/logs/main.log');
-    //         $logger  = new Logger(
-    //             'messages',
-    //             [
-    //                 'main' => $adapter,
-    //             ]
-    //         );
-
-    //         $eventsManager->attach(
-    //             'db:beforeQuery',
-    //             function ($event, $connection) use ($logger) {
-    //                 $logger->info(
-    //                     $connection->getSQLStatement()
-    //                 );
-    //             }
-    //         );
-    //         $eventsManager->attach(
-    //             'db:afterQuery',
-    //             function ($event, $connection) use ($logger) {
-    //                 $logger->info(
-    //                     $connection->getSQLStatement()
-    //                 );
-    //             }
-    //         );
-
-    //         $connection = new Mysql(
-    //             [
-    //                 'host'     => 'mysql-server',
-    //                 'username' => 'root',
-    //                 'password' => 'secret',
-    //                 'dbname'   => 'store',
-    //             ]
-
-    //         );
-
-    //         $connection->setEventsManager($eventsManager);
-    //         return $connection;
-    //     }
-    // );
-
-
 
 
     try {

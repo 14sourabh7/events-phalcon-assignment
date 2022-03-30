@@ -9,4 +9,10 @@ class Settings extends Model
     public $price;
     public $stock;
     public $zipcode;
+
+    public function getSettings()
+    {
+        return
+            Settings::findFirst('admin_id=1');
+    }
 }
