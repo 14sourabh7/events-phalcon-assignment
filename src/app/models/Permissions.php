@@ -9,6 +9,6 @@ class Permissions extends Model
     public $action;
     public function getPermissions()
     {
-        return Permissions::find(['order' => 'controller']);
+        return Permissions::find(['order' => 'role']);
     }
 }
