@@ -79,7 +79,8 @@ class EventHandler
             $controller
                 = $application->router->getControllerName();
             $action
-                = $application->router->getActionName();
+                = $application->router->getActionName() ? $application->router->getActionName() : 'index';
+
 
             if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
                 die('You are not authorised');
