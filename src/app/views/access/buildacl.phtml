@@ -49,7 +49,12 @@
 <select name='controller'>
     <?php if ($controllers)
         if ($controllers->count() > 0) {
-            foreach ($controllers as $controller) { ?>
+
+            foreach ($controllers as $controller) {
+                if ($controller->controller == 'access') {
+                    continue;
+                };
+    ?>
             <option name='controller' value="<?php
                                                 echo $controller->controller; ?>">
                 <?php
