@@ -5,6 +5,9 @@ namespace App\Handler;
 use Products;
 use Orders;
 use Settings;
+use Phalcon\Acl\Adapter\Memory;
+use Phalcon\Acl\Role;
+use Phalcon\Acl\Component;
 
 class EventHandler
 {
@@ -62,5 +65,30 @@ class EventHandler
 
         $order->update();
         $logger->log("order updated");
+    }
+
+
+    public function beforeHandleRequest()
+    {
+        $aclFile = '../app/security/acl.cache';
+        $application = new \Phalcon\Mvc\Application();
+        if (true === is_file($aclFile)) {
+            $acl = unserialize(file_get_contents($aclFile));
+
+            $role = $application->request->get('role');
+            $url = $application->request->get('_url');
+            $params = explode("/", $url);
+            if (!$params[2]) {
+                array_splice($params, 2, 1, 'index');
+            }
+            $controller = $params[1];
+            $method = $params[2];
+
+            if (!$role || true !== $acl->isAllowed($role, $controller, $method)) {
+                die('You are not authorised');
+            }
+        } else {
+            die('file not found');
+        }
     }
 }

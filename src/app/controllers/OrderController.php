@@ -7,12 +7,16 @@ class OrderController extends Controller
 {
     public function indexAction()
     {
+        $eventManager = $this->di->get('EventsManager');
+        // $eventManager->fire('application:beforeHandleRequest', $this);
         $order = new Orders();
         $this->view->orders = $order->getOrders();
     }
 
     public function addorderAction()
     {
+        $eventManager = $this->di->get('EventsManager');
+        // $eventManager->fire('application:beforeHandleRequest', $this);
         $this->view->products = Products::find();
         $escaper = new \App\Components\MyEscaper();
         $checkPost = $this->request->isPost();

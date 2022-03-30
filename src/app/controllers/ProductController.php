@@ -6,6 +6,8 @@ class ProductController extends Controller
 {
     public function indexAction()
     {
+        $eventManager = $this->di->get('EventsManager');
+        // $eventManager->fire('application:beforeHandleRequest', $this);
         $product = new Products();
         $this->view->products = $product->getProducts();;
     }
@@ -13,6 +15,8 @@ class ProductController extends Controller
 
     public function addAction()
     {
+        $eventManager = $this->di->get('EventsManager');
+        // $eventManager->fire('application:beforeHandleRequest', $this);
         $escaper = new \App\Components\MyEscaper();
         $checkPost = $this->request->isPost();
         $this->view->errorMessage = "";

@@ -7,6 +7,8 @@ class SettingsController extends Controller
 {
     public function indexAction()
     {
+        $eventManager = $this->di->get('EventsManager');
+        // $eventManager->fire('application:beforeHandleRequest', $this);
         $escaper = new \App\Components\MyEscaper();
         $settings = new Settings();
         $setting = $settings->getSettings();
