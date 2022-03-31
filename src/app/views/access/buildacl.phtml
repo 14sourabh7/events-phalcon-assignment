@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <?php echo $this->tag->linkTo(["/user", "Log Out", 'class' => 'btn btn-success']); ?>
     <h1 class="text-center">Give Permissions</h1>
     <br>
 
@@ -44,7 +45,7 @@
     </table>
 
 
-    <?php echo $this->tag->form("/access/buildacl?role=admin"); ?>
+    <?php echo $this->tag->form("/access/buildacl?role=" . $_GET["role"]); ?>
     <select name='roles'>
         <?php if ($roles)
             if ($roles->count() > 0) {

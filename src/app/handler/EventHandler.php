@@ -5,9 +5,9 @@ namespace App\Handler;
 use Products;
 use Orders;
 use Settings;
-use Phalcon\Acl\Adapter\Memory;
-use Phalcon\Acl\Role;
-use Phalcon\Acl\Component;
+
+use Phalcon\Security\JWT\Token\Parser;
+use Phalcon\Security\JWT\Validator;
 
 class EventHandler
 {
@@ -75,7 +75,35 @@ class EventHandler
         if (true === is_file($aclFile)) {
             $acl = unserialize(file_get_contents($aclFile));
 
-            $role = $application->request->get('role');
+            $role = $application->request->get('bearer');
+            if ($role) {
+                try {
+                    $parser = new Parser();
+                    $tokenObject = $parser->parse($role);
+
+                    $now = new \DateTimeImmutable();
+                    $expires = $now->getTimestamp();
+                    $validator = new Validator($tokenObject, 100);
+
+                    $validator->validateExpiration($expires);
+                    $claims = $tokenObject->getClaims()->getPayload();
+                    $role = $claims['sub'];
+                    $controller
+                        = $application->router->getControllerName();
+                    $action
+                        = $application->router->getActionName() ? $application->router->getActionName() : 'index';
+
+
+                    if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
+                        die('You are not authorised');
+                    }
+                } catch (\Exception $e) {
+                    echo $e->getMessage();
+                    die;
+                }
+            } else {
+                $role = 'guest';
+            }
             $controller
                 = $application->router->getControllerName();
             $action

@@ -43,6 +43,10 @@ class AccessController extends Controller
                         $acl->addRole($r->role);
                     }
                     foreach ($controller as $c) {
+                        if ($c->controller == 'user') {
+                            $acl->addComponent($c->controller, ['index', 'login', 'signup']);
+                            continue;
+                        }
                         $acl->addComponent($c->controller, ['index', 'add', 'update', 'delete']);
                     }
                     $permission = $permissions->getPermissions();

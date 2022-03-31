@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <h2>Add user</h2>
+
+    <?php echo $this->tag->form(""); ?>
+
+    <p>
+        <label for="name">Name</label>
+        <?php echo $this->tag->textField("name"); ?>
+    </p>
+
+    <p>
+        <label for="email">E-Mail</label>
+        <?php echo $this->tag->textField("email"); ?>
+    </p>
+    <p>
+        <label for="password">Password</label>
+        <?php echo $this->tag->textField("password"); ?>
+    </p>
+    Add role
+    <select name='roles'>
+        <?php if ($roles)
+            if ($roles->count() > 0) {
+                foreach ($roles as $role) {
+
+        ?>
+                <option name='roles' value="<?php
+                                            echo $role->role; ?>">
+                    <?php
+                    echo $role->role;
+                    ?>
+                </option> <?php  };
+                    } ?>
+    </select>
+
+    <p>
+        <br>
+        <?php echo $this->tag->submitButton(["Register", "class" => "btn btn-primary"]);
+
+        ?>
+    </p>
+
+    </form>
+    <?php echo $this->tag->linkTo('user', "Login"); ?>
+</body>
+
+</html>
