@@ -1,12 +1,14 @@
 $(document).ready(function () {
   $(".controller").click(function () {
     var controller = $(this).val();
+    var url = new URLSearchParams(window.location.search).get("bearer");
     $.ajax({
-      url: "/access/addactions?role=admin",
+      url: `/access/addactions?bearer=${url}`,
       method: "POST",
       data: { controller: controller },
       dataType: "json",
     }).done(function (response) {
+      console.log(response);
       display(response);
     });
   });

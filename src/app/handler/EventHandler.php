@@ -89,7 +89,7 @@ class EventHandler
                     $claims = $tokenObject->getClaims()->getPayload();
                     $role = $claims['sub'];
                     $controller
-                        = $application->router->getControllerName();
+                        = $application->router->getControllerName() ? $application->router->getControllerName() : 'product';
                     $action
                         = $application->router->getActionName() ? $application->router->getActionName() : 'index';
 
