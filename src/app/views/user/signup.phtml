@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+
+</style>
 
 <body>
 
@@ -47,12 +50,23 @@
     <p>
         <br>
         <?php echo $this->tag->submitButton(["Register", "class" => "btn btn-primary"]);
-
+        echo $msg;
         ?>
     </p>
 
     </form>
-    <?php echo $this->tag->linkTo('user', "Login"); ?>
+    <?php echo $this->tag->linkTo('user', "Login");
+
+    ?><br><br>
+    <h1 class='mx-5' style='width:400px'><?php
+                                            if ($tokenCheck) {
+                                                echo 'token generated - ';
+
+                                            ?></h1>
+    <a href='/product?bearer=<?php echo $token; ?>'>
+        <p class='text-danger'><?php echo  $token; ?></p>
+    </a>
+<?php } ?>
 </body>
 
 </html>

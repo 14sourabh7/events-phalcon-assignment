@@ -1,7 +1,7 @@
 <?php
-echo $this->tag->linkTo(["/order/addo?role=" . $_GET['bearer'], "Add Order", 'class' => 'btn btn-primary']);
-echo $this->tag->linkTo(["/product?role=" . $_GET['bearer'], "View Products", 'class' => 'btn btn-danger']);
-echo $this->tag->linkTo(["/settings?role=" . $_GET['bearer'], "Settings", 'class' => 'btn btn-secondary']);
+echo $this->tag->linkTo(["/order/add?bearer=" . $_GET['bearer'], "Add Order", 'class' => 'btn btn-primary']);
+echo $this->tag->linkTo(["/product?bearer=" . $_GET['bearer'], "View Products", 'class' => 'btn btn-danger']);
+echo $this->tag->linkTo(["/settings?bearer=" . $_GET['bearer'], "Settings", 'class' => 'btn btn-secondary']);
 echo $this->tag->linkTo(["/user", "Log Out", 'class' => 'btn btn-success']);
 if ($orders)
     if ($orders->count() > 0) {
