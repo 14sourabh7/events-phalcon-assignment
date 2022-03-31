@@ -104,15 +104,12 @@ class EventHandler
                 }
             } else {
                 $role = 'guest';
-            }
-            $controller
-                = $application->router->getControllerName();
-            $action
-                = $application->router->getActionName() ? $application->router->getActionName() : 'index';
-
-
-            if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
-                die('You are not authorised');
+                $controller = 'user';
+                $action
+                    = $application->router->getActionName() ? $application->router->getActionName() : 'index';
+                if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
+                    die('You are not authorised');
+                }
             }
         } else {
             die('file not found');
