@@ -148,4 +148,22 @@ class AccessController extends Controller
             }
         }
     }
+
+    public function addactionsAction()
+    {
+        $controller = $this->request->getPost()['controller'];
+        $mydir = "../app/views/$controller";
+        $actions = scandir($mydir);
+        $actionArr = array();
+        foreach ($actions as $action) {
+            if (strpos($action, '.phtml') !== false) {
+                array_push($actionArr, $action);
+            } else {
+                continue;
+            }
+        }
+        $actionArr = json_encode($actionArr);
+        echo $actionArr;
+        die;
+    }
 }
