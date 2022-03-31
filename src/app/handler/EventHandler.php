@@ -99,6 +99,7 @@ class EventHandler
                     }
                 } catch (\Exception $e) {
                     echo $e->getMessage();
+                    echo 'access denied';
                     die;
                 }
             } else {
