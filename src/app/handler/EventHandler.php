@@ -103,6 +103,7 @@ class EventHandler
                     die;
                 }
             } else {
+                //providing access to login / signup without jwt
                 $role = 'guest';
                 $controller = 'user';
                 $action
