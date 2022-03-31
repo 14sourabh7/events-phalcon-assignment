@@ -33,7 +33,7 @@
                     <td><?php echo $permission->action ?></td>
                     <?php
                             if ($permission->role != "admin") {
-                                echo " <td><a href='/access/del?role=admin&id=$permission->id'>Remove</a></td>";
+                                echo " <td><a href='/access/del?bearer=" . $_GET['bearer'] . "&id=$permission->id'>Remove</a></td>";
                             }
                     ?>
 
@@ -45,7 +45,7 @@
     </table>
 
 
-    <?php echo $this->tag->form("/access/buildacl?role=" . $_GET["role"]); ?>
+    <?php echo $this->tag->form(""); ?>
     <select name='roles'>
         <?php if ($roles)
             if ($roles->count() > 0) {

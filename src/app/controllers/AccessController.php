@@ -111,7 +111,7 @@ class AccessController extends Controller
             }
             file_put_contents($aclFile, serialize($acl));
         }
-        $this->response->redirect('/access/buildacl?role=admin');
+        $this->response->redirect('/access/buildacl?bearer=' . $this->request->get('bearer'));
     }
 
 

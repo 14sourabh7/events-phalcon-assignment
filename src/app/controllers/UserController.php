@@ -10,12 +10,15 @@ class UserController extends Controller
 {
     public function indexAction()
     {
+        $escaper = new \App\Components\MyEscaper();
         $this->view->message = '';
         $check = $this->request->isPost();
         if ($check) {
             if ($this->request->getPost()['email'] && $this->request->getPost()['password']) {
-                $email = $this->request->getPost()['email'];
-                $password = $this->request->getPost()['password'];
+                $email =
+                    $escaper->sanitize($this->request->getPost()['email']);
+                $password =
+                    $escaper->sanitize($this->request->getPost()['password']);
                 $user = new Users();
                 $data = $user->checkUser($email, $password);
                 if ($data) {
@@ -59,6 +62,7 @@ class UserController extends Controller
     }
     public function signupAction()
     {
+        $escaper = new \App\Components\MyEscaper();
         $roles = Roles::find();
         $this->view->roles = $roles;
         $this->view->tokenCheck = 0;
@@ -72,10 +76,13 @@ class UserController extends Controller
             if ($checkUser) {
                 $this->view->msg = 'user exists you can login now or can use the token send to you to access';
             } else {
-                $user->name = $inputs['name'];
-                $user->email = $inputs['email'];
-                $user->password = $inputs['password'];
-                $user->role = $inputs['roles'];
+                $user->name = $escaper->sanitize($inputs['name']);
+                $user->email
+                    = $escaper->sanitize($inputs['email']);
+                $user->password =
+                    $escaper->sanitize($inputs['password']);
+                $user->role =
+                    $escaper->sanitize($inputs['roles']);
                 $result = $user->save();
 
                 if ($result) {
