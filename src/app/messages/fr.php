@@ -37,6 +37,7 @@ $messages = [
     'generated' => 'généré',
     'role' => 'rôle',
     'total' => 'totale',
+    'lang' => 'Choisir la langue',
     'er1' => '*le code postal doit être numérique',
     'er2' => '*la quantité doit être numérique',
     'er3' => '*seul le zip peut être laissé vide',

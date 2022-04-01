@@ -37,6 +37,7 @@ $messages = [
     'generated' => 'Generated',
     'role' => 'Role',
     'total' => 'Total',
+    'lang' => 'Select Language',
     'er1' => '*zipcode must be numeric',
     'er2' => '*quantity must be numeric',
     'er3' => '*only zip can be left blank',
