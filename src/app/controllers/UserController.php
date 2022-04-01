@@ -2,8 +2,10 @@
 
 use Phalcon\Mvc\Controller;
 
-use Phalcon\Security\JWT\Builder;
-use Phalcon\Security\JWT\Signer\Hmac;
+
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 
 class UserController extends Controller
@@ -23,35 +25,22 @@ class UserController extends Controller
                 $data = $user->checkUser($email, $password);
                 if ($data) {
 
-                    $signer  = new Hmac();
-                    $builder = new Builder($signer);
 
-                    $now        = new DateTimeImmutable();
-                    $issued     = $now->getTimestamp();
-                    $notBefore  = $now->modify('-1 minute')->getTimestamp();
-                    $expires    = $now->modify('+1 day')->getTimestamp();
-                    $passphrase = 'QcMpZ&b&mo3TPsPk668J6QH8JA$&U&m2';
+                    $key =  'RwII94n0W/wnXyq5fU3SD6FUFz8IcyYUXjUqpUoCqXg=';
+
+                    $payload = array(
+                        "iss" => "localhost:8080",
+                        "aud" => "localhost:8080",
+                        "iat" => 1356999524,
+                        "nbf" => 1357000000,
+                        'name' => $data->name,
+                        'role' => $data->role
+                    );
+
+                    $jwt = JWT::encode($payload, $key, 'HS256');
 
 
-                    // Setup
-                    $builder
-                        ->setAudience('localhost:8080')  // aud
-                        ->setContentType('application/json')        // cty - header
-                        ->setExpirationTime($expires)               // exp 
-                        ->setId('abcd123456789')                    // JTI id 
-                        ->setIssuedAt($issued)                      // iat 
-                        ->setIssuer('https://phalcon.io')           // iss 
-                        ->setNotBefore($notBefore)                  // nbf
-                        ->setSubject($data->role)   // sub
-                        ->setPassphrase($passphrase)                // password 
-                    ;
-
-                    // Phalcon\Security\JWT\Token\Token object
-                    $tokenObject = $builder->getToken();
-                    // The token
-                    $userToken =  $tokenObject->getToken();
-
-                    $this->response->redirect("/product?bearer=$userToken");
+                    $this->response->redirect("/product?bearer=$jwt");
                 } else {
                     $this->view->message = 'authentication failed';
                 }
@@ -72,50 +61,34 @@ class UserController extends Controller
             $inputs = $this->request->getPost();
 
             $user = new Users();
-            $user->checkUser($inputs['email'], $inputs['password']);
-            if ($checkUser) {
-                $this->view->msg = 'user exists you can login now or can use the token send to you to access';
-            } else {
-                $user->name = $escaper->sanitize($inputs['name']);
-                $user->email
-                    = $escaper->sanitize($inputs['email']);
-                $user->password =
-                    $escaper->sanitize($inputs['password']);
-                $user->role =
-                    $escaper->sanitize($inputs['roles']);
-                $result = $user->save();
 
-                if ($result) {
-                    $signer  = new Hmac();
-                    $builder = new Builder($signer);
+            $user->name = $escaper->sanitize($inputs['name']);
+            $user->email
+                = $escaper->sanitize($inputs['email']);
+            $user->password =
+                $escaper->sanitize($inputs['password']);
+            $user->role =
+                $escaper->sanitize($inputs['roles']);
+            $result = $user->save();
 
-                    $now        = new DateTimeImmutable();
-                    $issued     = $now->getTimestamp();
-                    $notBefore  = $now->modify('-1 minute')->getTimestamp();
-                    $expires    = $now->modify('+1 day')->getTimestamp();
-                    $passphrase = 'QcMpZ&b&mo3TPsPk668J6QH8JA$&U&m2';
+            if ($result) {
 
 
-                    // Setup
-                    $builder
-                        ->setAudience('localhost:8080')  // aud
-                        ->setContentType('application/json')        // cty - header
-                        ->setExpirationTime($expires)               // exp 
-                        ->setId('abcd123456789')                    // JTI id 
-                        ->setIssuedAt($issued)                      // iat 
-                        ->setIssuer('https://phalcon.io')           // iss 
-                        ->setNotBefore($notBefore)                  // nbf
-                        ->setSubject($inputs['roles'])   // sub
-                        ->setPassphrase($passphrase)                // password 
-                    ;
+                $key =  'RwII94n0W/wnXyq5fU3SD6FUFz8IcyYUXjUqpUoCqXg=';
 
-                    // Phalcon\Security\JWT\Token\Token object
-                    $tokenObject = $builder->getToken();
-                    // The token
-                    $userToken =  $tokenObject->getToken();
-                    $this->view->tokenCheck = 1;
-                    $this->view->token = $userToken;
-                }
+                $payload = array(
+                    "iss" => "localhost:8080",
+                    "aud" => "localhost:8080",
+                    "iat" => 1356999524,
+                    "nbf" => 1357000000,
+                    'name' => $inputs['name'],
+                    'role' => $inputs['roles']
+                );
+
+                $jwt = JWT::encode($payload, $key, 'HS256');
+
+                $this->view->tokenCheck = 1;
+                $this->view->token = $jwt;
             }
         }
     }

@@ -6,8 +6,8 @@ use Products;
 use Orders;
 use Settings;
 
-use Phalcon\Security\JWT\Token\Parser;
-use Phalcon\Security\JWT\Validator;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class EventHandler
 {
@@ -78,16 +78,12 @@ class EventHandler
             $role = $application->request->get('bearer');
             if ($role) {
                 try {
-                    $parser = new Parser();
-                    $tokenObject = $parser->parse($role);
 
-                    $now = new \DateTimeImmutable();
-                    $expires = $now->getTimestamp();
-                    $validator = new Validator($tokenObject, 100);
+                    $key =  'RwII94n0W/wnXyq5fU3SD6FUFz8IcyYUXjUqpUoCqXg=';
+                    $decoded = JWT::decode($role, new Key($key, 'HS256'));
+                    $decodeArr = (array)$decoded;
+                    $role = $decodeArr['role'];
 
-                    $validator->validateExpiration($expires);
-                    $claims = $tokenObject->getClaims()->getPayload();
-                    $role = $claims['sub'];
                     $controller
                         = $application->router->getControllerName() ? $application->router->getControllerName() : 'product';
                     $action
