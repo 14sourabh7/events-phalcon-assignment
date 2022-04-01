@@ -5,7 +5,8 @@ namespace App\Handler;
 use Products;
 use Orders;
 use Settings;
-
+use Permissions;
+use Phalcon\Acl\Adapter\Memory;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -73,7 +74,21 @@ class EventHandler
         $locale = new \App\Components\Locale();
         $local = $locale->getTranslator();
         $aclFile = '../app/security/acl.cache';
+        $aclContent = file_get_contents($aclFile);
         $application = new \Phalcon\Mvc\Application();
+
+        if (!file_exists($aclFile) || (strlen($aclContent) == 0)) {
+            $aclContent = new Memory();
+            $aclContent->addrole('admin');
+            $aclContent->allow('*', '*', '*');
+            file_put_contents($aclFile, serialize($aclContent));
+            $permission = new Permissions();
+            $permission->role = 'admin';
+            $permission->controller = '*';
+            $permission->action = '*';
+
+            $result = $permission->save();
+        }
         if (true === is_file($aclFile)) {
             $acl = unserialize(file_get_contents($aclFile));
 
@@ -93,6 +108,7 @@ class EventHandler
 
 
                     if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
+
                         die($local->_('authorised'));
                     }
                 } catch (\Exception $e) {

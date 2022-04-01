@@ -8,15 +8,22 @@ use Phalcon\Cli\Dispatcher;
 use Phalcon\Di\FactoryDefault\Cli as CliDI;
 use Phalcon\Exception as PhalconException;
 use Phalcon\Loader;
+use Phalcon\Db\Adapter\Pdo\Mysql;
 use Throwable;
+
 
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
-
+require BASE_PATH . '/vendor/autoload.php';
 $loader = new Loader();
 $loader->registerNamespaces(
     [
         'App\Console' => APP_PATH . '/console',
+    ]
+);
+$loader->registerDirs(
+    [
+        APP_PATH . "/models/",
     ]
 );
 $loader->register();
@@ -35,6 +42,20 @@ $container->setShared('dispatcher', $dispatcher);
 $console = new Console($container);
 $container->setShared('console', $console);
 
+$container->set(
+    'db',
+    function () {
+        global $config;
+        return new Mysql(
+            [
+                'host'  => 'mysql-server',
+                'username' => 'root',
+                'password' => 'secret',
+                'dbname'   => 'store',
+            ]
+        );
+    }
+);
 $arguments = [];
 foreach ($argv as $k => $arg) {
     if ($k === 1) {

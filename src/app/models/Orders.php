@@ -10,6 +10,7 @@ class Orders extends Model
     public $zip;
     public $product;
     public $quantity;
+    public $date;
 
     public function getOrders()
     {

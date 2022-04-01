@@ -78,7 +78,7 @@ class ProductController extends Controller
                         if ($success) {
                             $eventManager = $this->di->get('EventsManager');
                             $eventManager->fire('order:productSave', $this);
-                            $this->response->redirect('/product');
+                            $this->response->redirect("/product?bearer=" . $_GET['bearer'] . "&locale=" . $_GET['locale']);
                         }
                     }
                 } else {
@@ -103,7 +103,7 @@ class ProductController extends Controller
                     if ($success) {
                         $eventManager = $this->di->get('EventsManager');
                         $eventManager->fire('order:productSave', $this);
-                        $this->response->redirect('/product');
+                        $this->response->redirect("/product?bearer=" . $_GET['bearer'] . "&locale=" . $_GET['locale']);
                     }
                 }
             } else {
