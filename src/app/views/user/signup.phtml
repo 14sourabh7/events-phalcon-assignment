@@ -12,26 +12,36 @@
 </style>
 
 <body>
+    <div class="dropdown float-right">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select Language
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "?locale=en" ?>">English</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "?locale=fr" ?>">French</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "?locale=en" ?>">Hindi</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "?locale=en" ?>">Japanese</a>
+        </div>
+    </div>
 
-
-    <h2>Add user</h2>
+    <h2><?php echo $locale->_('add') . " " . $locale->_('user'); ?></h2>
 
     <?php echo $this->tag->form(""); ?>
 
     <p>
-        <label for="name">Name</label>
+        <label for="name"><?php echo $locale->_('name') ?></label>
         <?php echo $this->tag->textField("name"); ?>
     </p>
 
     <p>
-        <label for="email">E-Mail</label>
+        <label for="email"><?php echo $locale->_('email') ?></label>
         <?php echo $this->tag->textField("email"); ?>
     </p>
     <p>
-        <label for="password">Password</label>
+        <label for="password"><?php echo $locale->_('password') ?></label>
         <?php echo $this->tag->textField("password"); ?>
     </p>
-    Add role
+    <?php echo $locale->_('add') . " " . $locale->_('role'); ?>
     <select name='roles'>
         <?php if ($roles)
             if ($roles->count() > 0) {
@@ -39,9 +49,9 @@
 
         ?>
                 <option name='roles' value="<?php
-                                            echo $role->role; ?>">
+                                            echo $locale->_($role->role); ?>">
                     <?php
-                    echo $role->role;
+                    echo $locale->_($role->role);
                     ?>
                 </option> <?php  };
                     } ?>
@@ -49,21 +59,27 @@
 
     <p>
         <br>
-        <?php echo $this->tag->submitButton(["Register", "class" => "btn btn-primary"]);
+        <?php echo $this->tag->submitButton([$locale->_('register'), "class" => "btn btn-primary"]);
         echo $msg;
         ?>
     </p>
 
     </form>
-    <?php echo $this->tag->linkTo('user', "Login");
+    <?php echo $this->tag->linkTo('user', $locale->_('login'));
 
     ?><br><br>
     <h1 class='mx-5' style='width:400px'><?php
                                             if ($tokenCheck) {
-                                                echo 'token generated - ';
+                                                echo $locale->_('token') . " " . $locale->_('generated');
 
                                             ?></h1>
-    <a href='/product?bearer=<?php echo $token; ?>'>
+
+    <?php if (isset($_GET['locale'])) {
+                                                    $locale = $_GET['locale'];
+                                                } else {
+                                                    $locale = 'en';
+                                                } ?>
+    <a href='/product?bearer=<?php echo $token . "&locale=" . $locale; ?>'>
         <p class='text-danger'><?php echo  $token; ?></p>
     </a>
 <?php } ?>

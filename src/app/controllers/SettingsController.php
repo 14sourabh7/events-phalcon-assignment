@@ -8,6 +8,7 @@ class SettingsController extends Controller
     public function indexAction()
     {
         $eventManager = $this->di->get('EventsManager');
+        $this->view->locale = $this->locale;
         // $eventManager->fire('application:beforeHandleRequest', $this);
         $escaper = new \App\Components\MyEscaper();
         $settings = new Settings();

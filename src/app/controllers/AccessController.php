@@ -12,6 +12,7 @@ class AccessController extends Controller
     }
     public function buildaclAction()
     {
+        $this->view->locale = $this->locale;
         $permissions = new Permissions();
         $permission = $permissions->getPermissions();
         $roles = new Roles();
@@ -118,7 +119,7 @@ class AccessController extends Controller
 
     public function addcontrollerAction()
     {
-
+        $this->view->locale = $this->locale;
         $Controller = new Controllers();
         $this->view->controllers = $Controller->getControllers();
         $dbcontroller = $Controller->getControllers();

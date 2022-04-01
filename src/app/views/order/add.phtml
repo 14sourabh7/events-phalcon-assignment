@@ -5,27 +5,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order</title>
+    <title><?php echo $locale->_('order'); ?></title>
 </head>
 
 <body>
-    <?php echo $this->tag->linkTo(["/user", "Log Out", 'class' => 'btn btn-success']); ?>
-    <h2>Place Order</h2>
+    <div class="dropdown float-right">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select Language
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">English</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=fr" ?>">French</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">Hindi</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">Japanese</a>
+        </div>
+    </div>
+    <?php echo $this->tag->linkTo(["/user", $locale->_('logout'), 'class' => 'btn btn-success']); ?>
+    <h2><?php ?></h2>
 
     <?php echo $this->tag->form(""); ?>
 
     <p>
-        <label for="name">Customer Name</label>
+        <label for="name"><?php echo $locale->_('name') ?></label>
         <?php echo $this->tag->textField("name"); ?>
     </p>
 
     <p>
-        <label for="address">Customer Address</label>
+        <label for="address"><?php echo $locale->_('address') ?></label>
         <?php echo $this->tag->textArea("address"); ?>
     </p>
 
     <p>
-        <label for="zip">Zip Code</label>
+        <label for="zip"><?php echo $locale->_('zip') ?></label>
         <?php echo $this->tag->textField("zip"); ?>
     </p>
     <select name="product">
@@ -39,12 +50,12 @@
             }; ?>
     </select>
     <p>
-        <label for="quantity">Quantity</label>
+        <label for="quantity"><?php echo $locale->_('quantity') ?></label>
         <?php echo $this->tag->textField("quantity"); ?>
     </p>
 
     <p>
-        <?php echo $this->tag->submitButton(["Add", "class" => "btn btn-primary"]);
+        <?php echo $this->tag->submitButton([$locale->_('add'), "class" => "btn btn-primary"]);
         echo $errorMessage;
         ?>
     </p>

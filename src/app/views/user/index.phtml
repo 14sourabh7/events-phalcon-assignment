@@ -1,22 +1,32 @@
-<h2>Login</h2>
-
+<div class="dropdown float-right">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Select Language
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "?locale=en" ?>">English</a>
+        <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "?locale=fr" ?>">French</a>
+        <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "?locale=en" ?>">Hindi</a>
+        <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "?locale=en" ?>">Japanese</a>
+    </div>
+</div>
+<h2><?php echo $locale->_('login'); ?></h2>
 <?php echo $this->tag->form(""); ?>
 
 <p>
-    <label for="email">email</label>
+    <label for="email"><?php echo $locale->_('email'); ?></label>
     <?php echo $this->tag->textField("email"); ?>
 </p>
 
 <p>
-    <label for="password">password</label>
+    <label for="password"><?php echo $locale->_('password'); ?></label>
     <?php echo $this->tag->textField("password"); ?>
 </p>
 <p>
 
     <?php
     echo $message;
-    echo $this->tag->submitButton(["login", "class" => "btn btn-primary"]); ?>
+    echo $this->tag->submitButton([$locale->_('login'), "class" => "btn btn-primary"]); ?>
 </p>
 
 </form>
-<?php echo $this->tag->linkTo('user/signup', "Sign up"); ?>
+<?php echo $this->tag->linkTo('user/signup', $locale->_('signup')); ?>

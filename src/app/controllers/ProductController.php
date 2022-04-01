@@ -7,6 +7,7 @@ class ProductController extends Controller
     public function indexAction()
     {
         $eventManager = $this->di->get('EventsManager');
+        $this->view->locale = $this->locale;
         // $eventManager->fire('application:beforeHandleRequest', $this);
         $product = new Products();
         $this->view->products = $product->getProducts();;
@@ -16,6 +17,7 @@ class ProductController extends Controller
     public function addAction()
     {
         $eventManager = $this->di->get('EventsManager');
+        $this->view->locale = $this->locale;
         // $eventManager->fire('application:beforeHandleRequest', $this);
         $escaper = new \App\Components\MyEscaper();
         $checkPost = $this->request->isPost();
@@ -40,7 +42,7 @@ class ProductController extends Controller
                             $price = $escaper->sanitize($inputs['price']);
                         } else {
                             $checkP = 0;
-                            $this->view->errorMessage = '*price and stock must be numeric';
+                            $this->view->errorMessage = $this->locale->_('er4');
                         }
                     }
 
@@ -51,7 +53,7 @@ class ProductController extends Controller
                             $stock = $escaper->sanitize($inputs['stock']);
                         } else {
                             $checkS = 0;
-                            $this->view->errorMessage = '*price and stock must be numeric';
+                            $this->view->errorMessage = $this->locale->_('er4');
                         }
                     }
 
@@ -105,7 +107,7 @@ class ProductController extends Controller
                     }
                 }
             } else {
-                $this->view->errorMessage = '*only price and stock can be left blank';
+                $this->view->errorMessage = $this->locale->_('er5');
             }
         }
     }

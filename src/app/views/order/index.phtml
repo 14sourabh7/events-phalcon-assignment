@@ -1,20 +1,32 @@
 <?php
-echo $this->tag->linkTo(["/order/add?bearer=" . $_GET['bearer'], "Add Order", 'class' => 'btn btn-primary']);
-echo $this->tag->linkTo(["/product?bearer=" . $_GET['bearer'], "View Products", 'class' => 'btn btn-danger']);
-echo $this->tag->linkTo(["/settings?bearer=" . $_GET['bearer'], "Settings", 'class' => 'btn btn-secondary']);
-echo $this->tag->linkTo(["/user", "Log Out", 'class' => 'btn btn-success']);
+echo $this->tag->linkTo(["/order/add?bearer=" . $_GET['bearer'] . "&locale=" . $_GET['locale'], $locale->_('add') . " " . $locale->_('order'), 'class' => 'btn btn-primary']);
+echo $this->tag->linkTo(["/product?bearer=" . $_GET['bearer'] . "&locale=" . $_GET['locale'], $locale->_('view') . " " . $locale->_('product'), 'class' => 'btn btn-danger']);
+echo $this->tag->linkTo(["/settings?bearer=" . $_GET['bearer'] . "&locale=" . $_GET['locale'], $locale->_('settings'), 'class' => 'btn btn-secondary']);
+echo $this->tag->linkTo(["/user", $locale->_('logout'), 'class' => 'btn btn-success']);
+
 if ($orders)
     if ($orders->count() > 0) {
 ?>
+    <div class="dropdown float-right">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select Language
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">English</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=fr" ?>">French</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">Hindi</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">Japanese</a>
+        </div>
+    </div>
     <table class="table table-bordered table-hover">
         <thead class="thead-light">
             <tr>
-                <th>order_ID</th>
-                <th>Customer Name</th>
-                <th>Address</th>
-                <th>Zip Code</th>
-                <th>Product</th>
-                <th>Quantity</th>
+                <th><?php echo $locale->_('order') . $locale->_('id'); ?></th>
+                <th><?php echo $locale->_('name') ?></th>
+                <th><?php echo $locale->_('address') ?></th>
+                <th><?php echo $locale->_('zip') ?></th>
+                <th><?php echo $locale->_('product') ?></th>
+                <th><?php echo $locale->_('quantity') ?></th>
             </tr>
         </thead>
 

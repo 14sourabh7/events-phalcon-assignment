@@ -13,7 +13,9 @@ class UserController extends Controller
     public function indexAction()
     {
         $escaper = new \App\Components\MyEscaper();
+        $this->view->locale = $this->locale;
         $this->view->message = '';
+        $locale = $this->request->get()['locale'];
         $check = $this->request->isPost();
         if ($check) {
             if ($this->request->getPost()['email'] && $this->request->getPost()['password']) {
@@ -38,14 +40,18 @@ class UserController extends Controller
                     );
 
                     $jwt = JWT::encode($payload, $key, 'HS256');
+                    if ($locale) {
+                        $locale = $locale;
+                    } else {
+                        $locale = 'en';
+                    }
 
-
-                    $this->response->redirect("/product?bearer=$jwt");
+                    $this->response->redirect("/product?bearer=$jwt&locale=$locale");
                 } else {
                     $this->view->message = 'authentication failed';
                 }
             } else {
-                $this->view->message = 'please fill all fields';
+                $this->view->message = $this->locale->_('er6');
             }
         }
     }
@@ -53,6 +59,7 @@ class UserController extends Controller
     {
         $escaper = new \App\Components\MyEscaper();
         $roles = Roles::find();
+        $this->view->locale = $this->locale;
         $this->view->roles = $roles;
         $this->view->tokenCheck = 0;
         $this->view->msg = "";

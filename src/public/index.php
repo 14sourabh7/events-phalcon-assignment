@@ -82,7 +82,7 @@
         }
     );
 
-
+    $container->set('locale', (new \App\Components\Locale())->getTranslator());
     try {
         // Handle the request
         $response = $application->handle(

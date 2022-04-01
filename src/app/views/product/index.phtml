@@ -5,16 +5,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <title>Products</title>
 </head>
 
 <body>
     <?php
-    echo $this->tag->linkTo(["/product/add?bearer=" . $_GET['bearer'], "Add Product", 'class' => 'btn btn-primary']);
-    echo $this->tag->linkTo(["/order?bearer=" . $_GET['bearer'], "Orders", 'class' => 'btn btn-danger']);
-    echo $this->tag->linkTo(["/settings?bearer=" . $_GET['bearer'], "Settings", 'class' => 'btn btn-secondary']);
-    echo $this->tag->linkTo(["/user", "Log Out", 'class' => 'btn btn-success']);
+    echo $this->tag->linkTo(["/product/add?bearer=" . $_GET['bearer'] . "&locale=" . $_GET['locale'], $locale->_('add') . " " . $locale->_('product'), 'class' => 'btn btn-primary']);
+    echo $this->tag->linkTo(["/order?bearer=" . $_GET['bearer'] . "&locale=" . $_GET['locale'], $locale->_('order'), 'class' => 'btn btn-danger']);
+    echo $this->tag->linkTo(["/settings?bearer=" . $_GET['bearer'] . "&locale=" . $_GET['locale'], $locale->_('settings'), 'class' => 'btn btn-secondary']);
+    echo $this->tag->linkTo(["/user", $locale->_('logout'), 'class' => 'btn btn-success']);
     ?>
+
+    <div class="dropdown float-right">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select Language
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">English</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=fr" ?>">French</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">Hindi</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">Japanese</a>
+        </div>
+    </div>
     <?php
     if ($products)
         if ($products->count() > 0) {
@@ -22,17 +36,17 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-light">
                 <tr>
-                    <th>product_ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Tags</th>
-                    <th>Price</th>
-                    <th>Stock</th>
+                    <th> <?php echo $locale->_('product') . $locale->_('id'); ?></th>
+                    <th><?php echo $locale->_('name'); ?></th>
+                    <th><?php echo $locale->_('description'); ?></th>
+                    <th><?php echo $locale->_('tags'); ?></th>
+                    <th><?php echo $locale->_('price'); ?></th>
+                    <th><?php echo $locale->_('stock'); ?></th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <td colspan="3">Total Products: <?php echo $products->count(); ?></td>
+                    <td colspan="3"><?php echo $locale->_('total') . " " . $locale->_('product'); ?>: <?php echo $products->count(); ?></td>
                 </tr>
             </tfoot>
             <tbody>

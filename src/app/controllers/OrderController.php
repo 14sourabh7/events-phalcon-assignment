@@ -8,6 +8,7 @@ class OrderController extends Controller
     public function indexAction()
     {
         $eventManager = $this->di->get('EventsManager');
+        $this->view->locale = $this->locale;
         // $eventManager->fire('application:beforeHandleRequest', $this);
         $order = new Orders();
         $this->view->orders = $order->getOrders();
@@ -16,6 +17,7 @@ class OrderController extends Controller
     public function addAction()
     {
         $eventManager = $this->di->get('EventsManager');
+        $this->view->locale = $this->locale;
         // $eventManager->fire('application:beforeHandleRequest', $this);
         $this->view->products = Products::find();
         $escaper = new \App\Components\MyEscaper();
@@ -53,7 +55,7 @@ class OrderController extends Controller
                                 $this->response->redirect('/order');
                             }
                         } else {
-                            $this->view->errorMessage = '*zipcode must be numeric';
+                            $this->view->errorMessage = $this->locale->_('er1');
                         }
                     } else {
                         $orderArr = [
@@ -79,10 +81,12 @@ class OrderController extends Controller
                         }
                     }
                 } else {
-                    $this->view->errorMessage = '*quantity must be numeric';
+                    $this->view->errorMessage =
+                        $this->locale->_('er2');
                 }
             } else {
-                $this->view->errorMessage = '*only zip can be left blank';
+                $this->view->errorMessage
+                    = $this->locale->_('er3');
             }
         }
     }

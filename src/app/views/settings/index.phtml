@@ -5,53 +5,63 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Products</title>
+    <title><?php echo $locale->_('settings') ?></title>
 </head>
 
 <body>
     <?php
-    echo $this->tag->linkTo(["/product?bearer=" . $_GET['bearer'], "Product", 'class' => 'btn btn-primary']);
-    echo $this->tag->linkTo(["/order?bearer=" . $_GET['bearer'], "Orders", 'class' => 'btn btn-danger']);
-    echo $this->tag->linkTo(["/user", "Log Out", 'class' => 'btn btn-success']);
+    echo $this->tag->linkTo(["/product?bearer=" . $_GET['bearer'] . "&locale=" . $_GET['locale'], $locale->_('product'), 'class' => 'btn btn-primary']);
+    echo $this->tag->linkTo(["/order?bearer=" . $_GET['bearer'] . "&locale=" . $_GET['locale'], $locale->_('order'), 'class' => 'btn btn-danger']);
+    echo $this->tag->linkTo(["/user", $locale->_('logout'), 'class' => 'btn btn-success']);
 
     ?>
     <h2>Settings</h2>
 
-
+    <div class="dropdown float-right">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select Language
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">English</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=fr" ?>">French</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">Hindi</a>
+            <a class="dropdown-item" href="<?php echo $_SERVER['REQUEST_URI'] . "&locale=en" ?>">Japanese</a>
+        </div>
+    </div>
 
     <?php echo $this->tag->form(""); ?>
     <p>
-        <label for="title"> Title optimization :
+        <label for="title"><?php echo $locale->_('title') . " " . $locale->_('optimization') . " :"; ?>
             <select name="title">
-                <option value="<?php echo $title ?>" name='tags'><?php echo $title ?> Tags</option>
-                <option value="with" name='tags'>With Tags</option>
-                <option value="without" name='tags'>Without Tags</option>
+                <option value="<?php echo $title ?>" name='tags'><?php echo $title ?> <?php echo $locale->_('tags') ?></option>
+                <option value="with" name='tags'><?php echo $locale->_('with') . " " . $locale->_('tags'); ?></option>
+                <option value="without" name='tags'><?php echo $locale->_('without') . " " . $locale->_('tags'); ?></option>
             </select>
         </label>
     </p>
     <p>
-        <label for="price"> Default Price:
+        <label for="price"> <?php echo $locale->_('default') . " " . $locale->_('price'); ?>
             <?php
             echo $this->tag->textField(['price', 'value' => $price]);
             ?>
         </label>
     </p>
     <p>
-        <label for="stock"> Default Stock:
+        <label for="stock"> <?php echo $locale->_('default') . " " . $locale->_('stock'); ?>
             <?php
             echo $this->tag->textField(['stock', 'value' => $stock]);
             ?>
         </label>
     </p>
     <p>
-        <label for="zip"> Default Zipcode:
+        <label for="zip"> <?php echo $locale->_('default') . " " . $locale->_('zip'); ?>
             <?php
             echo $this->tag->textField(['zip', 'value' => $zip]);
             ?>
         </label>
     </p>
     <p>
-        <?php echo $this->tag->submitButton(["update", "class" => "btn btn-primary"]);
+        <?php echo $this->tag->submitButton([$locale->_('update'), "class" => "btn btn-primary"]);
         echo $errorMessage;
         ?>
     </p>

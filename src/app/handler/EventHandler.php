@@ -70,6 +70,8 @@ class EventHandler
 
     public function beforeHandleRequest()
     {
+        $locale = new \App\Components\Locale();
+        $local = $locale->getTranslator();
         $aclFile = '../app/security/acl.cache';
         $application = new \Phalcon\Mvc\Application();
         if (true === is_file($aclFile)) {
@@ -91,25 +93,31 @@ class EventHandler
 
 
                     if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
-                        die('You are not authorised');
+                        die($local->_('authorised'));
                     }
                 } catch (\Exception $e) {
                     echo $e->getMessage();
-                    echo 'access denied';
+                    echo $local->_('access');
                     die;
                 }
             } else {
                 //providing access to login / signup without jwt
-                $role = 'guest';
-                $controller = 'user';
-                $action
-                    = $application->router->getActionName() ? $application->router->getActionName() : 'index';
-                if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
-                    die('You are not authorised');
+                $controller
+                    = $application->router->getControllerName();
+                if ($controller == 'user') {
+                    $role = 'guest';
+                    $controller = 'user';
+                    $action
+                        = $application->router->getActionName() ? $application->router->getActionName() : 'index';
+                    if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
+                        die($local->_('authorised'));
+                    }
+                } else {
+                    die($local->_('authorised'));
                 }
             }
         } else {
-            die('file not found');
+            die($local->_('filenot'));
         }
     }
 }
